@@ -12,6 +12,7 @@ public class Solution {
         int n = in.nextInt();
         int n1 = in.nextInt();
         int[][] n2 = new int[n1][4];
+        // taking inputs into n2 (2d array)
         for(int i = 0 ; i < n1 ; i++){
             for(int j = 0 ; j < 4 ; j++){
                 n2[i][j] = in.nextInt();
@@ -19,7 +20,8 @@ public class Solution {
         }
         //Integer.MIN_VALUE returns the minimum value of integer
         //Integer.MAX_VALUE returns the maximum value of integer
-        int xmax = Integer.MIN_VALUE,xmin = Inetger.MAX_VALUE,ymax = MIN_VALUE,ymin = Inetger.MAX_VALUE;
+        int xmax = Integer.MIN_VALUE,xmin = Integer.MAX_VALUE,ymax = Integer.MIN_VALUE,ymin = Integer.MAX_VALUE;
+        // creating a 2d array for hashing from max-min
         for(int  i = 0 ; i < n1 ; i++){
             if(n2[i][0] > xmax) xmax = n2[i][0];
             if(n2[i][0] < xmin) xmin = n2[i][0];
@@ -27,8 +29,51 @@ public class Solution {
             if(n2[i][1] < ymin) ymin = n2[i][1];
         }
         int[][] h = new int[ymax-ymin+1][xmax-xmin+1];
-        Arrays.fill(h,0);
+        for(int i = 0 ; i < ymax-ymin+1 ; i++)
+            Arrays.fill(h[i],3);
         //initializes all the values in the array h to 0
+        int[][] l = new int[n1][3];
+        //Finding line equations
+        for(int i= 0 ; i < n1 ; i++){
+            l[i][0] = n2[i][3] - n2[i][1];
+            l[i][1] = n2[i][0] - n2[i][1];
+            l[i][2] = (l[i][0] * -n2[i][0]) + (l[i][1] * -n2[i][1]);
+         }
+        //
+        int rowiterator = ymax-ymin+1;
+        int columniterator = xmax-xmin+1;
+        int k = 0,l1 = 0;
+        for(int i = ymin ; i <= ymax ; i++){
+            for(int j = xmin ; j <= xmax ; j++){
+                for(int m = 0 ;m < n1 ; m++){
+                    double den = Math.sqrt((l[m][0]*l[m][0])+(l[m][1]*l[m][1]));
+                    double num = (l[m][0] * j) + (l[m][1] * i) + l[m][2];
+                    System.out.print(num/den + " ");
+                    if(num/den == 0.0){
+                        h[k][l1] = 2;
+                        System.out.println("2 entered"+" "+k+" "+l1);
+                    }
+                    else if(num/den < 0.5){
+                        h[k][l1] = 1;
+                        System.out.println("1 entered"+" "+k+" "+l1);
+                    }
+                    else{
+                        h[k][l1] = 0;
+                        System.out.println("0 entered"+" "+k+" "+l1);
+                    }
+                }
+                l1++;
+            }
+            k++;
+        }
+        for(int i = k-1 ; i >= 0 ; i--){
+            for(int j = l1-1 ; j >= 0 ; j--){
+                System.out.print(h[i][j]+" ");
+            }
+            System.out.println("\n");
+        }
         
     }
 }
+
+

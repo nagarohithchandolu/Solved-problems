@@ -7,6 +7,7 @@ void recu(int si,int sj,int m,int a[r][c]){
      
         return;
     }
+    
     else if((si == di)&&(sj == dj)){
         if(m>max){
             
